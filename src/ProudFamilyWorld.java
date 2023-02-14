@@ -11,6 +11,15 @@ public class ProudFamilyWorld implements Runnable, KeyListener, MouseListener {
     public Canvas canvas;
     public JPanel panel;
     public BufferStrategy bufferStrategy;
+    public Image pennyPic;
+    public Image papiPic;
+    public Image sugamamaPic;
+    public Image sistersPic;
+
+    public Penny penny;
+    public Papi papi;
+    public SugaMama sugaMama;
+    public GrossSisters grossSisters;
 
     public static void main (String [] args){// psvm for shortcut
         ProudFamilyWorld myApp = new ProudFamilyWorld();
@@ -24,26 +33,33 @@ public class ProudFamilyWorld implements Runnable, KeyListener, MouseListener {
         canvas.addKeyListener (this);
         canvas.addMouseListener(this);
 
-        //add images in here
-
+        pennyPic = Toolkit.getDefaultToolkit().getImage("penny.png");
+        sugamamaPic = Toolkit.getDefaultToolkit().getImage("sugamama.jpeg");
+        papiPic = Toolkit.getDefaultToolkit().getImage("papi.jpeg");
+        sistersPic = Toolkit.getDefaultToolkit().getImage("grosssisters.jpeg");
     }
 
     public void render(){
         Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
         g.clearRect(0, 0, WIDTH, HEIGHT);
 
-        //draw characters to the screen
-       // g.drawImage(mouse1.pic, mouse1.xpos, mouse1.ypos, mouse1.width, mouse1.height, null);
-       // g.drawImage(theCheese.pic, theCheese.xpos, theCheese.ypos, theCheese.width, theCheese.height, null);
-        //g.drawImage(user.pic, user.xpos, user.ypos, user.width, user.height, null);
+       g.drawImage(penny.pic, penny.xpos, penny.ypos, penny.width, penny.height, null);
+       g.drawImage(sugaMama.pic, sugaMama.xpos, sugaMama.ypos, sugaMama.width, sugaMama.height, null);
+       g.drawImage(papi.pic, papi.xpos, papi.ypos, papi.width, papi.height, null);
+
+
+       Penny = new Penny(300,400,5,6,pennyPic);
+       Penny = new Penny(300,400,5,6,pennyPic);
+       Penny = new Penny(300,400,5,6,pennyPic);
+       Penny = new Penny(300,400,5,6,pennyPic);
+
 
         g.dispose();
         bufferStrategy.show();
     }
 
     public void moveThings(){
-
-
+        penny.move();
     }
 
     public void run(){
@@ -56,6 +72,8 @@ public class ProudFamilyWorld implements Runnable, KeyListener, MouseListener {
     }
 
     public void checkIntersections(){
+
+        // insert code here later on
     }
 
     public void setUpGraphics() {
@@ -96,16 +114,6 @@ public class ProudFamilyWorld implements Runnable, KeyListener, MouseListener {
 
         }
     }
-
-
-
-
-
-
-
-
-
-
 
 
 
