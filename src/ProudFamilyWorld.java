@@ -11,15 +11,22 @@ public class ProudFamilyWorld implements Runnable, KeyListener, MouseListener {
     public Canvas canvas;
     public JPanel panel;
     public BufferStrategy bufferStrategy;
+    public boolean gameStart = false;
     public Image pennyPic;
     public Image papiPic;
     public Image sugamamaPic;
     public Image sistersPic;
+    public Image proudhousePic;
 
     public Penny penny;
     public Papi papi;
+
     public SugaMama sugaMama;
+
     public GrossSisters grossSisters;
+    public ProudHouse proudHouse;
+
+    public Player user;
 
     public static void main (String [] args){// psvm for shortcut
         ProudFamilyWorld myApp = new ProudFamilyWorld();
@@ -33,25 +40,41 @@ public class ProudFamilyWorld implements Runnable, KeyListener, MouseListener {
         canvas.addKeyListener (this);
         canvas.addMouseListener(this);
 
-        pennyPic = Toolkit.getDefaultToolkit().getImage("penny.png");
-        sugamamaPic = Toolkit.getDefaultToolkit().getImage("sugamama.jpeg");
-        papiPic = Toolkit.getDefaultToolkit().getImage("papi.jpeg");
-        sistersPic = Toolkit.getDefaultToolkit().getImage("grosssisters.jpeg");
+        pennyPic = Toolkit.getDefaultToolkit().getImage("penny!.png");
+        sugamamaPic = Toolkit.getDefaultToolkit().getImage("sugamama.png");
+        papiPic = Toolkit.getDefaultToolkit().getImage("papi.png");
+        sistersPic = Toolkit.getDefaultToolkit().getImage("grosssisters.png");
+        proudhousePic = Toolkit.getDefaultToolkit().getImage("proudhouse.jpeg");
+
+
+        penny = new Penny(400,400,5,6, pennyPic);
+        sugaMama = new SugaMama(200, 400, 5, 6, sugamamaPic);
+        papi = new Papi(300, 400, 2, 3, papiPic);
+        grossSisters = new GrossSisters(500, 600, 7, 4, sistersPic);
+        user = new Player(200, 400, 3, 5, pennyPic);
+
     }
 
     public void render(){
         Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
         g.clearRect(0, 0, WIDTH, HEIGHT);
 
-       g.drawImage(penny.pic, penny.xpos, penny.ypos, penny.width, penny.height, null);
-       g.drawImage(sugaMama.pic, sugaMama.xpos, sugaMama.ypos, sugaMama.width, sugaMama.height, null);
-       g.drawImage(papi.pic, papi.xpos, papi.ypos, papi.width, papi.height, null);
+        if (gameStart == false) {
+            g.setColor(Color.PINK);
+            g.fillRect (0,0,WIDTH, HEIGHT);
+            g.setColor(Color.BLACK);
+            g.drawString("Press enter to start", 450, 350);
 
 
-       Penny = new Penny(300,400,5,6,pennyPic);
-       Penny = new Penny(300,400,5,6,pennyPic);
-       Penny = new Penny(300,400,5,6,pennyPic);
-       Penny = new Penny(300,400,5,6,pennyPic);
+
+        }else {
+            g.drawImage(proudHouse.pic, proudHouse.xpos,proudHouse.ypos, proudHouse.width, proudHouse.height);
+            g.drawImage(penny.pic, penny.xpos,penny.ypos,penny.width,penny.height, null);
+            g.drawImage(papi.pic, penny.xpos, penny.ypos, penny.width, penny.height, null);
+            g.drawImage(sugaMama.pic, sugaMama.xpos, sugaMama.ypos, sugaMama.width, sugaMama.height, null);
+            g.drawImage(grossSisters.pic, grossSisters.xpos, grossSisters.ypos, grossSisters.width, grossSisters.height, null);
+            g.drawImage(user.pic, user.xpos, user.ypos, user.width, user.height, null);
+        }
 
 
         g.dispose();
@@ -59,13 +82,15 @@ public class ProudFamilyWorld implements Runnable, KeyListener, MouseListener {
     }
 
     public void moveThings(){
-        penny.move();
+
     }
 
     public void run(){
         while (true) {
-            moveThings();
-            checkIntersections();
+            if (gameStart == true) {
+                moveThings();
+                checkIntersections();
+            }
             render();
             pause(20);
         }
@@ -125,12 +150,36 @@ public class ProudFamilyWorld implements Runnable, KeyListener, MouseListener {
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void keyPressed(KeyEvent event) {
+        char key = event.getKeyChar();     //gets the character of the key pressed
+        int keyCode = event.getKeyCode();  //gets the keyCode (an integer) of the key pressed
+        System.out.println("Key Pressed: " + key + "  Code: " + keyCode);
 
+        if(keyCode == 13){
+            //gameStart = true;
+        }
+
+        if (keyCode == 68) { // d
+            user.right = true;
+        }
+        if (keyCode == 87) { //w
+            user.up = true;
+        }
+        if (keyCode == 83){ //s
+            user.down = true;
+        }
+        if (keyCode == 65){ //a
+            user.left = true;
+        }
+
+        if (keyCode == 32) { // space
+            user.dy = -5;
+        }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+
 
     }
 

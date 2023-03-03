@@ -1,7 +1,6 @@
 import java.awt.*;
 
-public class Penny {
-
+public class SugaMama {
     public int xpos;
     public int ypos;
     public int width;
@@ -17,7 +16,7 @@ public class Penny {
     public Rectangle rec;
     public Image pic;
 
-    public Penny(int pXpos, int pYpos, int dxParameter, int dyParameter, Image picParameter) {
+    public SugaMama(int pXpos, int pYpos, int dxParameter, int dyParameter, Image picParameter) {
 
         xpos = pXpos;
         ypos = pYpos;
@@ -31,14 +30,4 @@ public class Penny {
         rec = new Rectangle(xpos, ypos, width, height);
 
     }
-
-    public void mov(){
-        dx = -dx -dy;
-    }
-
-
-
-
-
-
 }
