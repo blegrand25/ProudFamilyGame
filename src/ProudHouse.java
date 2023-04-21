@@ -1,3 +1,5 @@
+import java.awt.*;
+
 public class ProudHouse {
 
     public int xpos;
@@ -8,7 +10,13 @@ public class ProudHouse {
     public int height;
     public Image pic;
 
-    public ProudHouse{
+    public ProudHouse(int pXpos, int pYpos, int dxParameter, int dyParameter ){
+        xpos = pXpos;
+        ypos = pYpos;
+        width = 1000;
+        height = 700;
+        dx = dxParameter;
+        dy = dyParameter;
 
 
     }

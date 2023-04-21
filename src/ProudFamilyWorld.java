@@ -18,26 +18,28 @@ public class ProudFamilyWorld implements Runnable, KeyListener, MouseListener {
     public Image sistersPic;
     public Image proudhousePic;
 
-    public Penny penny;
-    public Papi papi;
+    public Player penny;
+    public Player papi;
 
-    public SugaMama sugaMama;
+    public Player sugaMama;
 
-    public GrossSisters grossSisters;
+    public Player grossSisters;
     public ProudHouse proudHouse;
-
     public Player user;
+    public boolean isCrashing;
 
-    public static void main (String [] args){// psvm for shortcut
+
+
+    public static void main(String[] args) {// psvm for shortcut
         ProudFamilyWorld myApp = new ProudFamilyWorld();
         new Thread(myApp).start();
 
     }
 
-    public ProudFamilyWorld(){
+    public ProudFamilyWorld() {
 
         setUpGraphics();
-        canvas.addKeyListener (this);
+        canvas.addKeyListener(this);
         canvas.addMouseListener(this);
 
         pennyPic = Toolkit.getDefaultToolkit().getImage("penny!.png");
@@ -47,33 +49,30 @@ public class ProudFamilyWorld implements Runnable, KeyListener, MouseListener {
         proudhousePic = Toolkit.getDefaultToolkit().getImage("proudhouse.jpeg");
 
 
-        penny = new Penny(400,400,5,6, pennyPic);
-        sugaMama = new SugaMama(200, 400, 5, 6, sugamamaPic);
-        papi = new Papi(300, 400, 2, 3, papiPic);
-        grossSisters = new GrossSisters(500, 600, 7, 4, sistersPic);
-        user = new Player(200, 400, 3, 5, pennyPic);
+        penny = new Player(400, 400, 5, 6, pennyPic);
+        sugaMama = new Player(200, 400, 5, 6, sugamamaPic);
+        papi = new Player(300, 400, 2, 3, papiPic);
+        grossSisters = new Player(500, 600, 7, 4, sistersPic);
+
 
     }
 
-    public void render(){
+    public void render() {
         Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
         g.clearRect(0, 0, WIDTH, HEIGHT);
 
         if (gameStart == false) {
             g.setColor(Color.PINK);
-            g.fillRect (0,0,WIDTH, HEIGHT);
+            g.fillRect(0, 0, WIDTH, HEIGHT);
             g.setColor(Color.BLACK);
-            g.drawString("Press enter to start", 450, 350);
-
-
-
-        }else {
-            g.drawImage(proudHouse.pic, proudHouse.xpos,proudHouse.ypos, proudHouse.width, proudHouse.height);
-            g.drawImage(penny.pic, penny.xpos,penny.ypos,penny.width,penny.height, null);
+            g.drawString("Press space to start", 450, 350);
+        } else {
+            System.out.println("game rendered");
+            g.drawImage(proudhousePic, 0, 0, WIDTH, HEIGHT, null);
+            g.drawImage(penny.pic, penny.xpos, penny.ypos, penny.width, penny.height, null);
             g.drawImage(papi.pic, penny.xpos, penny.ypos, penny.width, penny.height, null);
             g.drawImage(sugaMama.pic, sugaMama.xpos, sugaMama.ypos, sugaMama.width, sugaMama.height, null);
             g.drawImage(grossSisters.pic, grossSisters.xpos, grossSisters.ypos, grossSisters.width, grossSisters.height, null);
-            g.drawImage(user.pic, user.xpos, user.ypos, user.width, user.height, null);
         }
 
 
@@ -81,11 +80,30 @@ public class ProudFamilyWorld implements Runnable, KeyListener, MouseListener {
         bufferStrategy.show();
     }
 
-    public void moveThings(){
+    public void moveThings() {
+        penny.bounce();
+        sugaMama.bounce();
+        papi.bounce();
+        grossSisters.bounce();
 
     }
 
-    public void run(){
+    public void defense(){
+        if (penny.rec.intersects(grossSisters.rec) ){
+            penny.dx = -penny.dx;
+            System.out.println("Please don't take my money!!");
+        }
+    }
+
+    public void HELLO(){
+        if (sugaMama.rec.intersects(papi.rec)){
+            papi.dy = -papi.dy;
+            System.out.println("¡Adiós mujer fea y perro asqueroso! hehehe");
+        }
+    }
+
+
+    public void run() {
         while (true) {
             if (gameStart == true) {
                 moveThings();
@@ -96,7 +114,7 @@ public class ProudFamilyWorld implements Runnable, KeyListener, MouseListener {
         }
     }
 
-    public void checkIntersections(){
+    public void checkIntersections() {
 
         // insert code here later on
     }
@@ -141,9 +159,6 @@ public class ProudFamilyWorld implements Runnable, KeyListener, MouseListener {
     }
 
 
-
-
-
     @Override
     public void keyTyped(KeyEvent e) {
 
@@ -155,8 +170,10 @@ public class ProudFamilyWorld implements Runnable, KeyListener, MouseListener {
         int keyCode = event.getKeyCode();  //gets the keyCode (an integer) of the key pressed
         System.out.println("Key Pressed: " + key + "  Code: " + keyCode);
 
-        if(keyCode == 13){
-            //gameStart = true;
+        if (keyCode == 32) {
+
+            gameStart = true;
+            System.out.println("gamestart: " + gameStart);
         }
 
         if (keyCode == 68) { // d
@@ -165,10 +182,10 @@ public class ProudFamilyWorld implements Runnable, KeyListener, MouseListener {
         if (keyCode == 87) { //w
             user.up = true;
         }
-        if (keyCode == 83){ //s
+        if (keyCode == 83) { //s
             user.down = true;
         }
-        if (keyCode == 65){ //a
+        if (keyCode == 65) { //a
             user.left = true;
         }
 
@@ -179,9 +196,32 @@ public class ProudFamilyWorld implements Runnable, KeyListener, MouseListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
+        char key = e.getKeyChar();     //gets the character of the key pressed
+        int keyCode = e.getKeyCode();  //gets the keyCode (an integer) of the key pressed
 
+        if (keyCode == 32) {
+            gameStart = true;
+        }
+        if (keyCode == 68) { // d
+            user.right = true;
+        }
+        if (keyCode == 87) { //w
+            user.up = true;
+        }
+        if (keyCode == 83) { //s
+            user.down = true;
+        }
+        if (keyCode == 65) { //a
+            user.left = true;
+        }
 
+        if (keyCode == 32) { // space
+            user.dy = -5;
+        }
     }
+
+
+
 
     @Override
     public void mouseClicked(MouseEvent e) {

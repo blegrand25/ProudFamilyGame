@@ -34,7 +34,47 @@ public class Player {
     } // constructor
 
     //move( ) method for a keyboard controlled character
-    public void move() {
+
+    public void move(){
+        xpos = xpos + dx;
+        ypos = ypos + dy;
+    }
+
+    public void bounce(){
+        if (left == true){
+            dx = -5;
+            dy=0;
+        }
+
+        if (right == true){
+            dx = 5;
+            dy=0;
+        }
+
+        if (down == true){
+            dx = 0;
+            dy=-5;
+        }
+
+        if (up == true){
+            dx = 0;
+            dy=5;
+        }
+
+        xpos = xpos + dx;
+        ypos = ypos + dy;
+
+        if (xpos >= 1000-width || xpos <=0){
+            dx = -dx;
+        }
+
+        if (ypos >= 700-height || ypos <= 0){
+            dy=-dy;
+        }
+
+        rec = new Rectangle (xpos, ypos, width, height);
+    }
+    public void move4() {
 
         if(right== true){
             xpos = xpos +dx;

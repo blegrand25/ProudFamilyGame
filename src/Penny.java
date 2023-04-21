@@ -32,13 +32,4 @@ public class Penny {
 
     }
 
-    public void mov(){
-        dx = -dx -dy;
-    }
-
-
-
-
-
-
 }

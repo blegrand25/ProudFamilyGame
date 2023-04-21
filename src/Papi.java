@@ -29,6 +29,5 @@ public class Papi {
         isAlive = true;
         hits = 0;
         rec = new Rectangle(xpos, ypos, width, height);
-
     }
 }
